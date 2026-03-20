@@ -1,0 +1,125 @@
+.page { padding: 80px 0 40px; min-height: 100vh; position: relative; z-index: 1; }
+.container { max-width: 1280px; margin: 0 auto; padding: 40px; }
+
+.dateForm { display: flex; align-items: flex-end; gap: 8px; }
+.dateInput { min-width: 160px; }
+
+.loadingState { display: flex; justify-content: center; padding: 80px 0; }
+
+/* Featured APOD */
+.apodFeatured {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 60px;
+  box-shadow: var(--shadow-glow);
+  animation: slideUp 0.5s ease;
+}
+.apodCard {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+.apodCard:hover { border-color: var(--border-bright); }
+
+.apodMedia { position: relative; overflow: hidden; }
+.apodFeatured .apodMedia { aspect-ratio: unset; min-height: 400px; }
+.apodCard:not(.apodFeatured) .apodMedia { aspect-ratio: 16/9; }
+
+.imgPlaceholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--nebula);
+}
+.apodImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.imgVisible { opacity: 1; }
+
+.videoEmbed { position: relative; padding-bottom: 56.25%; height: 0; }
+.iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.mediaOverlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.apodInfo { padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+.apodFeatured .apodInfo { justify-content: center; padding: 36px; gap: 16px; }
+
+.apodMeta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.apodDate { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+.apodCopyright { font-size: 0.75rem; color: var(--text-dim); }
+
+.apodTitle { font-size: 1rem; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+.apodTitleLarge { font-size: 1.75rem; letter-spacing: -0.02em; }
+
+.apodExplanation {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.apodExplanationShort {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Gallery */
+.gallerySection { margin-top: 48px; }
+.galleryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.galleryTitle { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+
+.galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.gallerySkeleton {
+  aspect-ratio: 4/3;
+  background: var(--nebula);
+  border-radius: var(--radius-lg);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .container { padding: 24px; }
+  .apodFeatured { grid-template-columns: 1fr; }
+  .apodFeatured .apodMedia { min-height: 240px; }
+}
+
+@media (max-width: 600px) {
+  .dateForm { flex-wrap: wrap; }
+  .dateInput { min-width: 100%; }
+}

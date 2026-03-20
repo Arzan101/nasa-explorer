@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --void: #000000;
+  --deep-space: #080808;
+  --nebula: #111111;
+  --starfield: #181818;
+  --aurora-blue: #2a2a2a;
+  --plasma: #333333;
+  --electric: #c0c0c0;
+  --ion: #d8d8d8;
+  --photon: #eeeeee;
+  --stardust: #f5f5f5;
+  --white: #ffffff;
+
+  --amber: #c0c0c0;
+  --amber-glow: #d8d8d8;
+  --mars-red: #888888;
+  --mars-light: #aaaaaa;
+  --neo-green: #ffffff;
+  --neo-danger: #bbbbbb;
+  --neo-warning: #999999;
+
+  --text-primary: #ffffff;
+  --text-secondary: #c0c0c0;
+  --text-muted: #888888;
+  --text-dim: #444444;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-bright: rgba(255, 255, 255, 0.2);
+  --glass: rgba(255, 255, 255, 0.03);
+  --glass-light: rgba(255, 255, 255, 0.07);
+
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --shadow-glow: 0 0 30px rgba(255, 255, 255, 0.05);
+  --shadow-intense: 0 0 60px rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.6);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-display);
+  background-color: var(--void);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--void); }
+::-webkit-scrollbar-thumb { background: #333; border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+::selection { background: #fff; color: #000; }
+:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }
+
+a { color: inherit; text-decoration: none; }
+button { font-family: var(--font-display); cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: var(--font-display); }
+img { max-width: 100%; display: block; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* ═══════════════════════════════════════
+   STAR FIELD  — pure CSS, no canvas
+   Three layers: tiny / medium / large
+   Each layer has its own blink keyframe
+   so stars feel independent
+═══════════════════════════════════════ */
+
+.starfield {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: #000;
+}
+
+/* ── Layer 1: dense tiny stars ── */
+.starfield::before {
+  content: '';
+  position: absolute;
+  inset: -100%;          /* oversized so drift never shows an edge */
+  width: 300%;
+  height: 300%;
+  background-image:
+    /* row 1 */
+    radial-gradient(2px 2px at  3%  7%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at  8% 14%,  #ccc 0%, transparent 100%),
+    radial-gradient(2px 2px at 13% 28%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 18%  5%,  #aaa 0%, transparent 100%),
+    radial-gradient(2px 2px at 23% 42%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 28% 19%,  #ddd 0%, transparent 100%),
+    radial-gradient(2px 2px at 33% 63%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 38% 35%,  #bbb 0%, transparent 100%),
+    radial-gradient(2px 2px at 43% 78%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 48% 11%,  #ccc 0%, transparent 100%),
+    radial-gradient(2px 2px at 53% 54%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 58% 88%,  #aaa 0%, transparent 100%),
+    radial-gradient(2px 2px at 63% 22%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 68% 45%,  #ddd 0%, transparent 100%),
+    radial-gradient(2px 2px at 73% 67%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 33%,  #bbb 0%, transparent 100%),
+    radial-gradient(2px 2px at 83% 91%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 88% 16%,  #ccc 0%, transparent 100%),
+    radial-gradient(2px 2px at 93% 58%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 97% 82%,  #aaa 0%, transparent 100%),
+    /* row 2 */
+    radial-gradient(2px 2px at  5% 50%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 10% 73%,  #ddd 0%, transparent 100%),
+    radial-gradient(2px 2px at 15% 90%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 20% 61%,  #bbb 0%, transparent 100%),
+    radial-gradient(2px 2px at 25% 38%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 30% 83%,  #ccc 0%, transparent 100%),
+    radial-gradient(2px 2px at 35%  2%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 40% 55%,  #aaa 0%, transparent 100%),
+    radial-gradient(2px 2px at 45% 27%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 50% 96%,  #ddd 0%, transparent 100%),
+    radial-gradient(2px 2px at 55% 44%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 60% 70%,  #bbb 0%, transparent 100%),
+    radial-gradient(2px 2px at 65%  9%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 70% 31%,  #ccc 0%, transparent 100%),
+    radial-gradient(2px 2px at 75% 85%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 80% 52%,  #aaa 0%, transparent 100%),
+    radial-gradient(2px 2px at 85% 18%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 90% 76%,  #ddd 0%, transparent 100%),
+    radial-gradient(2px 2px at 95% 40%,  #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at  1% 95%,  #bbb 0%, transparent 100%);
+  background-size: 700px 700px;
+  animation: drift1 200s linear infinite, blink1 4s ease-in-out infinite alternate;
+}
+
+/* ── Layer 2: medium stars ── */
+.starfield::after {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background-image:
+    radial-gradient(3px 3px at  6% 18%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 14% 72%,  #eee 0%, transparent 100%),
+    radial-gradient(3px 3px at 22% 44%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 31% 91%,  #ddd 0%, transparent 100%),
+    radial-gradient(3px 3px at 39% 26%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 47% 60%,  #eee 0%, transparent 100%),
+    radial-gradient(3px 3px at 55%  8%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 63% 79%,  #ddd 0%, transparent 100%),
+    radial-gradient(3px 3px at 71% 37%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 79% 55%,  #eee 0%, transparent 100%),
+    radial-gradient(3px 3px at 87% 14%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 94% 88%,  #ddd 0%, transparent 100%),
+    radial-gradient(3px 3px at  2% 66%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 18% 33%,  #eee 0%, transparent 100%),
+    radial-gradient(3px 3px at 26% 82%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 44% 49%,  #ddd 0%, transparent 100%),
+    radial-gradient(3px 3px at 52% 93%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 68% 21%,  #eee 0%, transparent 100%),
+    radial-gradient(3px 3px at 76% 68%,  #fff 0%, transparent 100%),
+    radial-gradient(3px 3px at 91% 42%,  #ddd 0%, transparent 100%);
+  background-size: 900px 900px;
+  animation: drift2 280s linear infinite reverse, blink2 6s ease-in-out infinite alternate;
+  opacity: 0.85;
+}
+
+/* ── Large bright stars injected via a wrapper div in App.jsx ──
+   We use a third element by targeting .starfield span          */
+.starfield-large {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.starfield-large::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background-image:
+    radial-gradient(4px 4px at  9% 30%,  #fff 0%, transparent 100%),
+    radial-gradient(5px 5px at 21% 65%,  #fff 0%, transparent 100%),
+    radial-gradient(4px 4px at 36% 12%,  #eee 0%, transparent 100%),
+    radial-gradient(5px 5px at 49% 84%,  #fff 0%, transparent 100%),
+    radial-gradient(4px 4px at 61% 47%,  #eee 0%, transparent 100%),
+    radial-gradient(5px 5px at 74% 23%,  #fff 0%, transparent 100%),
+    radial-gradient(4px 4px at 86% 71%,  #eee 0%, transparent 100%),
+    radial-gradient(5px 5px at 96% 15%,  #fff 0%, transparent 100%),
+    radial-gradient(4px 4px at  4% 88%,  #eee 0%, transparent 100%),
+    radial-gradient(5px 5px at 57% 56%,  #fff 0%, transparent 100%),
+    radial-gradient(4px 4px at 33% 39%,  #eee 0%, transparent 100%),
+    radial-gradient(5px 5px at 82% 93%,  #fff 0%, transparent 100%);
+  background-size: 1100px 1100px;
+  animation: drift3 320s linear infinite, blink3 3s ease-in-out infinite alternate;
+}
+
+/* ── Drift animations ── */
+@keyframes drift1 {
+  from { transform: translate(0,    0);    }
+  to   { transform: translate(120px, 80px); }
+}
+@keyframes drift2 {
+  from { transform: translate(0,    0);    }
+  to   { transform: translate(90px, 110px); }
+}
+@keyframes drift3 {
+  from { transform: translate(0,    0);    }
+  to   { transform: translate(60px, 70px); }
+}
+
+/* ── Independent blink animations ── */
+@keyframes blink1 {
+  0%   { opacity: 0.5; }
+  30%  { opacity: 1;   }
+  60%  { opacity: 0.6; }
+  100% { opacity: 1;   }
+}
+@keyframes blink2 {
+  0%   { opacity: 0.7; }
+  40%  { opacity: 0.4; }
+  70%  { opacity: 1;   }
+  100% { opacity: 0.6; }
+}
+@keyframes blink3 {
+  0%   { opacity: 0.6; }
+  50%  { opacity: 1;   }
+  100% { opacity: 0.4; }
+}
+
+/* Shared animations */
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 6px rgba(255,255,255,0.2); }
+  50%       { box-shadow: 0 0 16px rgba(255,255,255,0.5); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.animate-fade-in  { animation: fadeIn  0.5s ease forwards; }
+.animate-slide-up { animation: slideUp 0.4s ease forwards; }

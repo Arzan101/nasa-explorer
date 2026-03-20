@@ -1,0 +1,180 @@
+.page { padding: 80px 0 40px; min-height: 100vh; position: relative; z-index: 1; }
+.container { max-width: 1280px; margin: 0 auto; padding: 40px; }
+
+.roverTabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.roverTab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-full);
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: capitalize;
+}
+.roverTab:hover { color: var(--text-primary); border-color: var(--border-bright); }
+.roverTabActive {
+  color: var(--text-primary);
+  background: rgba(var(--rover-color-rgb, 42, 127, 212), 0.1);
+  border-color: var(--rover-color);
+  box-shadow: 0 0 16px rgba(0,0,0,0.2);
+}
+.roverDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rover-color, var(--electric));
+  flex-shrink: 0;
+}
+
+.manifestCard {
+  display: flex;
+  gap: 0;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  margin-bottom: 24px;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.manifestItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 24px;
+  border-right: 1px solid var(--border);
+  flex: 1;
+  min-width: 120px;
+}
+.manifestItem:last-child { border-right: none; }
+.manifestLabel { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
+.manifestValue { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+
+.controls { display: flex; align-items: flex-end; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+.controlGroup { display: flex; flex-direction: column; gap: 6px; }
+.controlLabel { font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em; font-family: var(--font-mono); }
+.solInput {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: var(--font-display);
+  outline: none;
+  width: 140px;
+  transition: border-color 0.2s;
+}
+.solInput:focus { border-color: var(--electric); }
+
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+.photoSkeleton {
+  aspect-ratio: 1;
+  background: var(--nebula);
+  border-radius: var(--radius-md);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.photoCard {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: none;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.photoCard:hover { transform: scale(1.03); border-color: var(--electric); z-index: 2; }
+.photoImg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photoOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  background: linear-gradient(to top, rgba(2,4,8,0.9), transparent);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.photoCard:hover .photoOverlay { opacity: 1; }
+.photoCam { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ion); font-weight: 700; }
+.photoDate { font-size: 0.7rem; color: var(--text-muted); }
+.photoCount { text-align: center; color: var(--text-dim); font-size: 0.85rem; margin-top: 24px; }
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fadeIn 0.2s ease;
+}
+.lightboxClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 201;
+}
+.lightboxClose:hover { background: var(--aurora-blue); }
+.lightboxContent {
+  background: var(--deep-space);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+.lightboxImg { width: 100%; max-height: 65vh; object-fit: contain; background: #000; }
+.lightboxInfo { padding: 20px 24px; display: flex; flex-direction: column; gap: 8px; }
+.lightboxMeta { display: flex; gap: 8px; }
+.lightboxCamera { font-size: 1rem; font-weight: 600; }
+.lightboxDate { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 768px) {
+  .container { padding: 24px; }
+  .controls { gap: 12px; }
+  .manifestItem { min-width: 50%; }
+}

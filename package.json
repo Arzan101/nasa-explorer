@@ -1,0 +1,19 @@
+{
+  "name": "nasa-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack NASA data explorer — React + Node/Express",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm start --prefix frontend\"",
+    "start:backend": "npm start --prefix backend",
+    "start:frontend": "npm start --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "test": "npm test --prefix backend && npm test --prefix frontend -- --watchAll=false",
+    "test:backend": "npm test --prefix backend",
+    "test:frontend": "npm test --prefix frontend -- --watchAll=false"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
