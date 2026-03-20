@@ -1,45 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { marsAPI } from '../utils/api';
-import { SectionHeader, Spinner, ErrorMessage, Button, Select, Badge, EmptyState } from '../components/UI';
+import { SectionHeader, ErrorMessage, Button, Select, Badge, EmptyState } from '../components/UI';
 import styles from './Mars.module.css';
 
 const ROVERS = ['curiosity', 'perseverance', 'opportunity', 'spirit'];
 const CAMERAS = {
-  curiosity: ['fhaz', 'rhaz', 'mast', 'chemcam', 'mahli', 'mardi', 'navcam'],
+  curiosity:    ['fhaz', 'rhaz', 'mast', 'chemcam', 'mahli', 'mardi', 'navcam'],
   perseverance: ['navcam_left', 'navcam_right', 'front_hazcam_left_a', 'rear_hazcam_left', 'skycam', 'sherloc_watson'],
-  opportunity: ['fhaz', 'rhaz', 'navcam', 'pancam'],
-  spirit: ['fhaz', 'rhaz', 'navcam', 'pancam'],
+  opportunity:  ['fhaz', 'rhaz', 'navcam', 'pancam'],
+  spirit:       ['fhaz', 'rhaz', 'navcam', 'pancam'],
 };
-
-const ROVER_COLORS = {
-  curiosity: '#e74c3c',
-  perseverance: '#f39c12',
-  opportunity: '#3498db',
-  spirit: '#9b59b6',
-};
-
-const DEFAULT_SOLS = { curiosity: 1000, perseverance: 100, opportunity: 100, spirit: 100 };
+const ROVER_COLORS  = { curiosity: '#e74c3c', perseverance: '#f39c12', opportunity: '#3498db', spirit: '#9b59b6' };
+const DEFAULT_SOLS  = { curiosity: 1000, perseverance: 200, opportunity: 100, spirit: 100 };
 
 export default function MarsPage() {
-  const [rover, setRover] = useState('curiosity');
-  const [camera, setCamera] = useState('');
-  const [sol, setSol] = useState(1000);
-  const [photos, setPhotos] = useState([]);
+  const [rover, setRover]     = useState('curiosity');
+  const [camera, setCamera]   = useState('');
+  const [sol, setSol]         = useState(1000);
+  const [photos, setPhotos]   = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError]     = useState(null);
   const [lightbox, setLightbox] = useState(null);
-  const [manifests, setManifests] = useState([]);
 
-  useEffect(() => {
-    marsAPI.getRovers().then(setManifests).catch(() => {});
-  }, []);
+  useEffect(() => { setSol(DEFAULT_SOLS[rover] || 100); setCamera(''); }, [rover]);
 
-  useEffect(() => {
-    setSol(DEFAULT_SOLS[rover] || 100);
-    setCamera('');
-  }, [rover]);
-
-  const fetchPhotos = async () => {
+  const fetchPhotos = useCallback(async () => {
     setLoading(true);
     setError(null);
     setPhotos([]);
@@ -56,95 +41,37 @@ export default function MarsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [rover, sol, camera]);
 
-  useEffect(() => { fetchPhotos(); }, []);
-
-  const roverManifest = manifests.find(m => m.name?.toLowerCase() === rover);
+  useEffect(() => { fetchPhotos(); }, [fetchPhotos]);
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <SectionHeader title="Mars Rovers" subtitle="Photos beamed back from the Red Planet" />
 
-        {/* Rover selector */}
         <div className={styles.roverTabs}>
           {ROVERS.map(r => (
-            <button
-              key={r}
-              className={`${styles.roverTab} ${rover === r ? styles.roverTabActive : ''}`}
-              style={{ '--rover-color': ROVER_COLORS[r] }}
-              onClick={() => setRover(r)}
-            >
-              <span className={styles.roverDot} />
-              {r.charAt(0).toUpperCase() + r.slice(1)}
+            <button key={r} className={`${styles.roverTab} ${rover === r ? styles.roverTabActive : ''}`} style={{ '--rover-color': ROVER_COLORS[r] }} onClick={() => setRover(r)}>
+              <span className={styles.roverDot} />{r.charAt(0).toUpperCase() + r.slice(1)}
             </button>
           ))}
         </div>
 
-        {/* Manifest card */}
-        {roverManifest && (
-          <div className={styles.manifestCard}>
-            <div className={styles.manifestItem}>
-              <span className={styles.manifestLabel}>Status</span>
-              <Badge variant={roverManifest.status === 'active' ? 'success' : roverManifest.status === 'unknown' ? 'default' : 'warning'} size="sm">
-                {roverManifest.status || '—'}
-              </Badge>
-            </div>
-            <div className={styles.manifestItem}>
-              <span className={styles.manifestLabel}>Landing Date</span>
-              <span className={styles.manifestValue}>{roverManifest.landing_date || '—'}</span>
-            </div>
-            <div className={styles.manifestItem}>
-              <span className={styles.manifestLabel}>Max Sol</span>
-              <span className={styles.manifestValue}>{roverManifest.max_sol?.toLocaleString() || '—'}</span>
-            </div>
-            <div className={styles.manifestItem}>
-              <span className={styles.manifestLabel}>Total Photos</span>
-              <span className={styles.manifestValue}>{roverManifest.total_photos?.toLocaleString() || '—'}</span>
-            </div>
-          </div>
-        )}
-
-        {/* Controls */}
         <div className={styles.controls}>
           <div className={styles.controlGroup}>
             <label htmlFor="sol-input" className={styles.controlLabel}>Sol (Mars Day)</label>
-            <input
-              id="sol-input"
-              type="number"
-              value={sol}
-              onChange={e => setSol(e.target.value)}
-              min="0"
-              max={roverManifest?.max_sol || 9999}
-              className={styles.solInput}
-            />
+            <input id="sol-input" type="number" value={sol} onChange={e => setSol(e.target.value)} min="0" max="9999" className={styles.solInput} />
           </div>
-
-          <Select
-            label="Camera"
-            id="camera-select"
-            value={camera}
-            onChange={e => setCamera(e.target.value)}
-          >
+          <Select label="Camera" id="camera-select" value={camera} onChange={e => setCamera(e.target.value)}>
             <option value="">All Cameras</option>
-            {(CAMERAS[rover] || []).map(cam => (
-              <option key={cam} value={cam}>{cam.toUpperCase()}</option>
-            ))}
+            {(CAMERAS[rover] || []).map(cam => <option key={cam} value={cam}>{cam.toUpperCase()}</option>)}
           </Select>
-
-          <Button variant="primary" onClick={fetchPhotos} loading={loading} disabled={loading}>
-            Fetch Photos
-          </Button>
+          <Button variant="primary" onClick={fetchPhotos} loading={loading} disabled={loading}>Fetch Photos</Button>
         </div>
 
-        {/* Results */}
         {loading ? (
-          <div className={styles.loadingGrid}>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className={styles.photoSkeleton} />
-            ))}
-          </div>
+          <div className={styles.loadingGrid}>{Array.from({ length: 12 }).map((_, i) => <div key={i} className={styles.photoSkeleton} />)}</div>
         ) : error ? (
           <ErrorMessage message={error} />
         ) : photos.length === 0 ? (
@@ -152,18 +79,8 @@ export default function MarsPage() {
         ) : (
           <div className={styles.photoGrid}>
             {photos.map(photo => (
-              <button
-                key={photo.id}
-                className={styles.photoCard}
-                onClick={() => setLightbox(photo)}
-                aria-label={`View photo from ${photo.camera?.full_name}`}
-              >
-                <img
-                  src={photo.img_src}
-                  alt={`Mars - ${photo.camera?.name}`}
-                  className={styles.photoImg}
-                  loading="lazy"
-                />
+              <button key={photo.id} className={styles.photoCard} onClick={() => setLightbox(photo)} aria-label={`View photo from ${photo.camera?.full_name}`}>
+                <img src={photo.img_src} alt={`Mars - ${photo.camera?.name}`} className={styles.photoImg} loading="lazy" />
                 <div className={styles.photoOverlay}>
                   <span className={styles.photoCam}>{photo.camera?.name}</span>
                   <span className={styles.photoDate}>{photo.earth_date}</span>
@@ -172,13 +89,9 @@ export default function MarsPage() {
             ))}
           </div>
         )}
-
-        <p className={styles.photoCount}>
-          {!loading && photos.length > 0 && `Showing ${photos.length} photos`}
-        </p>
+        <p className={styles.photoCount}>{!loading && photos.length > 0 && `Showing ${photos.length} photos`}</p>
       </div>
 
-      {/* Lightbox */}
       {lightbox && (
         <div className={styles.lightbox} onClick={() => setLightbox(null)}>
           <button className={styles.lightboxClose} onClick={() => setLightbox(null)} aria-label="Close">✕</button>

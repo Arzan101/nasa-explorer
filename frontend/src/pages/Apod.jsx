@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { apodAPI } from '../utils/api';
-import { SectionHeader, Spinner, ErrorMessage, Button, Input, Badge, Card } from '../components/UI';
+import { SectionHeader, Spinner, ErrorMessage, Button, Input, Badge } from '../components/UI';
 import styles from './Apod.module.css';
 
 function ApodCard({ item, featured = false }) {
@@ -24,13 +24,7 @@ function ApodCard({ item, featured = false }) {
           </>
         ) : (
           <div className={styles.videoEmbed}>
-            <iframe
-              src={item.url}
-              title={item.title}
-              frameBorder="0"
-              allowFullScreen
-              className={styles.iframe}
-            />
+            <iframe src={item.url} title={item.title} frameBorder="0" allowFullScreen className={styles.iframe} />
           </div>
         )}
         <div className={styles.mediaOverlay}>
@@ -45,11 +39,7 @@ function ApodCard({ item, featured = false }) {
         </div>
         <h2 className={`${styles.apodTitle} ${featured ? styles.apodTitleLarge : ''}`}>{item.title}</h2>
         {featured && <p className={styles.apodExplanation}>{item.explanation}</p>}
-        {!featured && (
-          <p className={styles.apodExplanationShort}>
-            {item.explanation?.slice(0, 120)}...
-          </p>
-        )}
+        {!featured && <p className={styles.apodExplanationShort}>{item.explanation?.slice(0, 120)}...</p>}
       </div>
     </article>
   );
@@ -90,6 +80,7 @@ export default function ApodPage() {
   useEffect(() => {
     fetchToday();
     fetchGallery();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDateSearch = async (e) => {
@@ -119,25 +110,14 @@ export default function ApodPage() {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
-        <SectionHeader
-          title="Astronomy Picture of the Day"
-          subtitle="NASA's daily window to the cosmos"
-        >
+        <SectionHeader title="Astronomy Picture of the Day" subtitle="NASA's daily window to the cosmos">
           <form className={styles.dateForm} onSubmit={handleDateSearch}>
-            <Input
-              type="date"
-              value={dateInput}
-              onChange={e => setDateInput(e.target.value)}
-              max={maxDate}
-              min="1995-06-16"
-              className={styles.dateInput}
-            />
+            <Input type="date" value={dateInput} onChange={e => setDateInput(e.target.value)} max={maxDate} min="1995-06-16" className={styles.dateInput} />
             <Button type="submit" variant="secondary" size="sm" disabled={!dateInput}>Go</Button>
             {selectedDate && <Button variant="ghost" size="sm" onClick={resetToToday}>Today</Button>}
           </form>
         </SectionHeader>
 
-        {/* Featured APOD */}
         {loading ? (
           <div className={styles.loadingState}><Spinner size="lg" /></div>
         ) : error ? (
@@ -146,26 +126,18 @@ export default function ApodPage() {
           <ApodCard item={today} featured />
         )}
 
-        {/* Gallery */}
         <div className={styles.gallerySection}>
           <div className={styles.galleryHeader}>
             <h3 className={styles.galleryTitle}>Random Discoveries</h3>
-            <Button variant="ghost" size="sm" onClick={fetchGallery} loading={galleryLoading}>
-              Shuffle ↺
-            </Button>
+            <Button variant="ghost" size="sm" onClick={fetchGallery} loading={galleryLoading}>Shuffle ↺</Button>
           </div>
-
           {galleryLoading ? (
             <div className={styles.galleryGrid}>
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className={styles.gallerySkeleton} />
-              ))}
+              {Array.from({ length: 8 }).map((_, i) => <div key={i} className={styles.gallerySkeleton} />)}
             </div>
           ) : (
             <div className={styles.galleryGrid}>
-              {gallery.map((item, i) => (
-                <ApodCard key={`${item.date}-${i}`} item={item} />
-              ))}
+              {gallery.map((item, i) => <ApodCard key={`${item.date}-${i}`} item={item} />)}
             </div>
           )}
         </div>
