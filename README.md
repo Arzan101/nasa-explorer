@@ -167,89 +167,10 @@ Open **http://localhost:3000** in your browser.
 
 ---
 
-## 🧪 Running Tests
-
-```bash
-# All tests (backend + frontend)
-npm test
-
-# Backend only (Jest + Supertest)
-npm run test:backend
-
-# Frontend only (React Testing Library)
-npm run test:frontend
-```
 
 ---
 
-## 🌐 Backend API Reference
 
-All endpoints are prefixed with `/api`.
-
-### APOD
-
-| Method | Endpoint | Query Params | Description |
-|---|---|---|---|
-| GET | `/api/apod` | `date`, `start_date`, `end_date`, `count` | Astronomy Picture of the Day |
-
-### Mars
-
-| Method | Endpoint | Query Params | Description |
-|---|---|---|---|
-| GET | `/api/mars/photos` | `rover`, `sol`, `earth_date`, `camera`, `page` | Rover photos |
-| GET | `/api/mars/rovers` | — | All rover manifests |
-
-### NEO
-
-| Method | Endpoint | Query Params | Description |
-|---|---|---|---|
-| GET | `/api/neo/feed` | `start_date`, `end_date` (max 7-day window) | Asteroid feed |
-| GET | `/api/neo/:id` | — | Single NEO detail |
-
-### EPIC
-
-| Method | Endpoint | Query Params | Description |
-|---|---|---|---|
-| GET | `/api/epic` | `date`, `type` (`natural`/`enhanced`) | Earth imagery |
-| GET | `/api/epic/dates` | `type` | Available image dates |
-
-### Search
-
-| Method | Endpoint | Query Params | Description |
-|---|---|---|---|
-| GET | `/api/search` | `q`, `media_type`, `page`, `year_start`, `year_end` | NASA image/video library |
-
-### Health
-
-```
-GET /health → { status: "ok", timestamp: "..." }
-```
-
----
-
-## 🚢 Deployment
-
-### Frontend — Vercel
-
-1. Push the repository to GitHub.
-2. Import the project in [Vercel](https://vercel.com).
-3. Set the **root directory** to `frontend`.
-4. Add the environment variable: `REACT_APP_API_URL=https://your-backend-url.render.com/api`
-5. Deploy.
-
-### Backend — Render
-
-1. Create a new **Web Service** in [Render](https://render.com).
-2. Connect your GitHub repo; set **root directory** to `backend`.
-3. **Build command:** `npm install`
-4. **Start command:** `npm start`
-5. Add environment variables:
-   - `NASA_API_KEY` — your NASA API key
-   - `NODE_ENV=production`
-   - `FRONTEND_URL=https://your-vercel-url.vercel.app`
-6. Deploy.
-
----
 
 ## 🛠 Tech Stack
 
